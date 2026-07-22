@@ -1,0 +1,9 @@
+README.md
+**/node_modules/
+**/dist/
+**/build/
+**/.env
+.git
+.github
+backend/src/generated/prisma/
+frontend/.vite/
