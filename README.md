@@ -1,166 +1,283 @@
-========================================
-Full-Stack E-Commerce Platform
-========================================
+# Full-Stack E-Commerce Platform
 
-Project Overview
-----------------
-A production-ready full-stack e-commerce web application featuring real-time inventory management, role-based access control, dynamic email notifications, and continuous activity auditing. Built with React, Node.js, Express, Prisma ORM, PostgreSQL, MongoDB, and TanStack Query.
+A production-ready full-stack e-commerce application featuring real-time inventory management, role-based access control, automated email notifications, and activity auditing.
 
-Key Features
-------------
-- User Authentication (JWT-based Register/Login)
-- Automated Dynamic Emails (Nodemailer integration generating temporary test accounts via Ethereal on registration)
-- Role-Based Access Control (User & Admin permissions)
-- Dynamic Product Catalog (Search, Category Filters, Sorting)
-- Smart Shopping Cart (Automated backend stock clamping & auto-sync)
-- User Profile Dashboard (/profile)
-- Admin Management Panel (/admin)
-- System Audit Logs (/admin/logs) for tracking event lifecycle
-- System Health Monitoring (Dedicated API health check endpoint)
-- Protected Routes using custom React components
-- Full-Stack Containerization via Docker Compose (PostgreSQL, MongoDB, Backend API, and Frontend App)
-- Unit & Integration Testing setup for Frontend and Backend
+Built with **React, Node.js, Express, Prisma ORM, PostgreSQL, MongoDB, Docker, and TanStack Query**.
 
-========================================
+---
 
-Tech Stack
+## Features
 
-Frontend
-- React (v18)
-- React Router (v6)
-- TanStack Query (React Query v5)
+- JWT Authentication (Register / Login)
+- Role-Based Access Control (User & Admin)
+- Dynamic Product Catalog
+  - Search
+  - Category Filtering
+  - Sorting
+- Smart Shopping Cart
+  - Automatic Stock Clamping
+  - Real-Time Synchronization
+- User Dashboard (`/profile`)
+- Admin Dashboard (`/admin`)
+- Audit Log System (`/admin/logs`)
+- Health Check API
+- Protected Routes
+- Dynamic Registration Emails (Nodemailer + Ethereal)
+- Dockerized Full Stack
+- Unit & Integration Testing
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- React 18
+- React Router v6
+- TanStack Query v5
 - Axios
 - Vite
-- Context API (AuthContext)
+- Context API
 
-Backend
-- Node.js & Express.js
+## Backend
+
+- Node.js
+- Express.js
 - Prisma ORM
-- PostgreSQL & MongoDB
-- JSON Web Tokens (JWT)
-- Bcrypt Password Hashing
-- Nodemailer (Temporary email generation during registration)
+- PostgreSQL
+- MongoDB
+- JWT Authentication
+- Bcrypt
+- Nodemailer
 
-Testing & Infrastructure
-- Jest & Supertest (Backend API Testing)
-- Vitest & React Testing Library (Frontend UI Testing)
-- Docker & Docker Compose
+## Testing
 
-========================================
+### Backend
 
-API Base & Service Paths
+- Jest
+- Supertest
 
-- Frontend Web Interface:   http://localhost:5173
-- Backend API Base Path:   http://localhost:5000/api
-- Health Check Endpoint:   http://localhost:5000/health
+### Frontend
 
-========================================
+- Vitest
+- React Testing Library
 
-Application Routes
+## Infrastructure
 
-Public Routes
-- /                          (Home)
-- /products                  (Catalog)
-- /products/:id              (Product Details)
-- /login & /register         (Authentication)
-- /unauthorized              (Access Denied)
+- Docker
+- Docker Compose
 
-Protected Routes (User & Admin)
-- /cart                      (Shopping Cart & Checkout)
-- /profile                   (User Profile Dashboard)
+---
 
-Protected Routes (Admin Only)
-- /admin                     (Inventory & Store Management)
-- /admin/logs                (System Activity Audit Trail)
+# Application URLs
 
-========================================
+| Service | URL |
+| -------- | --- |
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:5000/api |
+| Health Check | http://localhost:5000/health |
 
-How To Run
+---
 
-Step 1: Clone the Repository
----------------------------
-git clone https://github.com/Younes-235/E-commerce-website.git
-cd E-commerce-website
+# Routes
 
-Step 2: Configure Environment Variables
--------------------------------------
-Create a .env file inside the backend directory (backend/.env) with the following variables:
+## Public
 
+```
+/
+/products
+/products/:id
+/login
+/register
+/unauthorized
+```
+
+## Protected (User & Admin)
+
+```
+/cart
+/profile
+```
+
+## Admin Only
+
+```
+/admin
+/admin/logs
+```
+
+---
+
+# Running the Project
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/Younes-235/fullstack-ecommerce-younes-aly.git
+
+cd fullstack-ecommerce-younes-aly
+```
+
+---
+
+## 2. Configure Environment Variables
+
+Inside the `backend` directory, either:
+
+- Rename the included `.env.example` file to `.env`, **or**
+- Create a new file named `.env` and copy the contents from `.env.example`.
+
+Your `backend/.env` file should contain:
+
+```env
 DATABASE_URL="postgresql://myuser:mypassword@postgres_db:5432/my_relational_db?schema=public"
+
 MONGO_URI="mongodb://rootuser:rootpassword@mongo_db:27017/my_document_db?authSource=admin"
+
 JWT_SECRET=4c9f1b7a2d8e6c3b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b
+
 PORT=5000
+```
 
-Step 3: Run via Docker Compose (Recommended Full Stack)
-------------------------------------------------------
-# Build and spin up all containers (PostgreSQL, MongoDB, Backend API, Frontend App)
+---
+
+## 3. Run with Docker
+
+```bash
 docker-compose up --build -d
+```
 
-Step 4: Running Tests Inside Docker Containers
-----------------------------------------------
-# Run Backend Tests inside running container
-docker exec -it l5_backend npm test
+Once the containers have started, the application will be available at:
 
-# Run Frontend Tests inside running container
-docker exec -it l5_frontend npm test
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:5000/api
+- **Health Check:** http://localhost:5000/health
 
-Step 5: Stopping Docker Containers
-----------------------------------
-# Stop containers while preserving data volumes
-docker-compose stop
+The `/health` endpoint can be used to confirm that the backend API is running successfully.
 
-# Stop and remove containers, networks, and volumes
-docker-compose down -v
+---
 
-Step 6: Alternative Local Development (Without Docker for Node services)
-----------------------------------------------------------------------
-# 1. Start only databases via Docker
-docker-compose up -d postgres_db mongo_db
+## 4. Run Tests
 
-# 2. Setup & Run Backend locally
+Backend:
+
+```bash
 cd backend
-npm install
-npx prisma generate
-npx prisma migrate dev
-npx prisma db seed
-npm run dev
+npm test
+```
 
-# 3. Setup & Run Frontend locally (in a new terminal)
+Frontend:
+
+```bash
 cd frontend
+npm test
+```
+
+---
+
+## 5. Stop Containers
+
+Stop containers while preserving data:
+
+```bash
+docker-compose stop
+```
+
+Remove containers, networks, and volumes:
+
+```bash
+docker-compose down -v
+```
+
+---
+
+# Local Development
+
+Start only the databases:
+
+```bash
+docker-compose up -d postgres_db mongo_db
+```
+
+### Backend
+
+```bash
+cd backend
+
 npm install
+
+npx prisma generate
+
+npx prisma migrate dev
+
+npx prisma db seed
+
 npm run dev
+```
 
-# 4. Run tests locally
-cd backend && npm test
-cd frontend && npm test
+### Frontend
 
-========================================
+Open a new terminal:
 
-Project Repository
+```bash
+cd frontend
 
-GitHub Repository:
-https://github.com/Younes-235/E-commerce-website
+npm install
 
-========================================
+npm run dev
+```
 
-Test Credentials
+---
 
-Admin Account
+# Test Accounts
+
+## Admin
+
+```text
 Email: admin@example.com
 Password: AdminSecure123!
+```
 
-Customer Account
+## Customer
+
+```text
 Email: customer@example.com
 Password: password123
+```
 
-========================================
+---
 
-Technical Highlights
+# Technical Highlights
 
-- Inventory Protection: Cart quantities automatically clamp to remaining product stock in real time during checkout or inventory updates.
-- Activity Logging: Tracks major system actions including PRODUCT_CREATED, PRODUCT_UPDATED, PRODUCT_DELETED, USER_REGISTERED, ORDER_PLACED, and ORDER_STATUS_UPDATED.
-- Automated Email Delivery: Integrated Nodemailer with Ethereal to automatically generate a new temporary test email inbox upon each user registration.
-- Optimized Caching: TanStack Query manages cross-view state synchronization and background query invalidation.
-- Security: Role middleware enforces strict JWT claims on administrative backend endpoints.
+### Inventory Protection
 
-========================================
+Cart quantities automatically clamp to available inventory in real time.
+
+### Activity Logging
+
+Tracks:
+
+- PRODUCT_CREATED
+- PRODUCT_UPDATED
+- PRODUCT_DELETED
+- USER_REGISTERED
+- ORDER_PLACED
+- ORDER_STATUS_UPDATED
+
+### Automated Emails
+
+Every user registration generates a temporary Ethereal inbox through Nodemailer.
+
+### Optimized Caching
+
+TanStack Query keeps product, cart, and profile data synchronized across the application.
+
+### Security
+
+JWT authentication and role middleware secure all protected endpoints.
+
+---
+
+# Repository
+
+https://github.com/Younes-235/fullstack-ecommerce-younes-aly
