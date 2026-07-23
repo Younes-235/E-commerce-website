@@ -1,7 +1,12 @@
+const mongoose = require('mongoose');
 const ActivityLog = require('../models/ActivityLog');
 
 const logActivity = async ({ action, user, targetId, details = {} }) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return;
+    }
+
     await ActivityLog.create({
       action,
       performedBy: {

@@ -17,7 +17,14 @@ jest.mock('../config/db', () => {
       findUnique: jest.fn().mockResolvedValue({ id: 1, price: 10, stock: 5 }),
       update: jest.fn().mockResolvedValue({}),
     },
-    order: { create: jest.fn().mockResolvedValue({ id: 101, customerEmail: 'user@example.com' }) },
+    order: { 
+      create: jest.fn().mockResolvedValue({ 
+        id: 101, 
+        customerEmail: 'user@example.com', 
+        totalAmount: 10,
+        items: [{ productId: 1, quantity: 1, priceAtPurchase: 10 }] 
+      }) 
+    },
     cart: { update: jest.fn().mockResolvedValue({}) },
   };
   return mockPrisma;

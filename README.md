@@ -125,19 +125,7 @@ cd fullstack-ecommerce-younes-aly
 Inside the `backend` directory, either:
 
 - Rename the included `.env.example` file to `.env`, **or**
-- Create a new file named `.env` and copy the contents from `.env.example`.
-
-Your `backend/.env` file should contain:
-
-```env
-DATABASE_URL="postgresql://myuser:mypassword@postgres_db:5432/my_relational_db?schema=public"
-
-MONGO_URI="mongodb://rootuser:rootpassword@mongo_db:27017/my_document_db?authSource=admin"
-
-JWT_SECRET=4c9f1b7a2d8e6c3b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b
-
-PORT=5000
-```
+- Create a new file named `.env` and copy the contents from `.env.example` and put the real data.
 
 ---
 
@@ -162,15 +150,13 @@ The `/health` endpoint can be used to confirm that the backend API is running su
 Backend:
 
 ```bash
-cd backend
-npm test
+docker-compose exec backend_api npm test
 ```
 
 Frontend:
 
 ```bash
-cd frontend
-npm test
+docker-compose exec frontend_app npm test
 ```
 
 ---
@@ -187,44 +173,6 @@ Remove containers, networks, and volumes:
 
 ```bash
 docker-compose down -v
-```
-
----
-
-# Local Development
-
-Start only the databases:
-
-```bash
-docker-compose up -d postgres_db mongo_db
-```
-
-### Backend
-
-```bash
-cd backend
-
-npm install
-
-npx prisma generate
-
-npx prisma migrate dev
-
-npx prisma db seed
-
-npm run dev
-```
-
-### Frontend
-
-Open a new terminal:
-
-```bash
-cd frontend
-
-npm install
-
-npm run dev
 ```
 
 ---
