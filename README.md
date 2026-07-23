@@ -266,7 +266,7 @@ Tracks:
 
 ### Automated Emails
 
-Every user registration generates a temporary Ethereal inbox through Nodemailer.
+Every user registration generates a temporary Ethereal inbox through Nodemailer. (It's link can be found in the terminal after registration)
 
 ### Optimized Caching
 

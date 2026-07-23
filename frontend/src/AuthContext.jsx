@@ -1,46 +1,74 @@
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    useEffect(() =>  {
-        const token = localStorage.getItem('token');
-        if(token) {
-            try{
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setUser({
-                    id: payload.id,
-                    username: payload.name,
-                    email: payload.email,
-                    role: payload.role
-                });
-            } catch(error) {
-                localStorage.removeItem('token');
+
+    useEffect(() => {
+        const verifyToken = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await fetch('http://localhost:5000/api/profile', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const payload = JSON.parse(atob(token.split('.')[1]));
+                        setUser({
+                            id: payload.id,
+                            username: payload.name,
+                            email: payload.email,
+                            role: payload.role
+                        });
+                    } else {
+                        localStorage.removeItem('token');
+                        setUser(null);
+                    }
+                } catch (error) {
+                    localStorage.removeItem('token');
+                    setUser(null);
+                }
             }
-        }
-        setLoading(false);
+            setLoading(false);
+        };
+
+        verifyToken();
     }, []);
 
     const login = (token) => {
         localStorage.setItem('token', token);
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setUser({email: payload.email, role: payload.role});
-    }
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            setUser({
+                id: payload.id,
+                username: payload.name,
+                email: payload.email,
+                role: payload.role
+            });
+        } catch (error) {
+            localStorage.removeItem('token');
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
-    }
-    if(loading)
-    {
+    };
+
+    if (loading) {
         return <div>Loading application...</div>;
     }
+
     return (
-        <AuthContext.Provider value = {{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
 export const useAuth = () => useContext(AuthContext);
